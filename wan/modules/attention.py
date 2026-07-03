@@ -49,6 +49,27 @@ def flash_attention(
     deterministic:  bool. If True, slightly slower and uses more memory.
     dtype:          torch.dtype. Apply when dtype of q/k/v is not float16/bfloat16.
     """
+    # Fallback: several model modules (model.py, s2v, animate) call
+    # flash_attention() directly, bypassing the SDPA fallback in attention().
+    # Without flash_attn installed (e.g. runtime images with no nvcc) the old
+    # `assert FLASH_ATTN_2_AVAILABLE` crashed every generation. Use torch
+    # scaled_dot_product_attention instead; padding masks (q_lens/k_lens) are
+    # ignored, which is fine for the batch-size-1 service path.
+    if not (FLASH_ATTN_2_AVAILABLE or FLASH_ATTN_3_AVAILABLE):
+        warnings.warn(
+            'flash_attn not installed — falling back to torch '
+            'scaled_dot_product_attention (padding masks ignored).')
+        out_dtype = q.dtype
+        if q_scale is not None:
+            q = q * q_scale
+        q = q.transpose(1, 2).to(dtype)
+        k = k.transpose(1, 2).to(dtype)
+        v = v.transpose(1, 2).to(dtype)
+        x = torch.nn.functional.scaled_dot_product_attention(
+            q, k, v, is_causal=causal, dropout_p=dropout_p,
+            scale=softmax_scale)
+        return x.transpose(1, 2).contiguous().type(out_dtype)
+
     half_dtypes = (torch.float16, torch.bfloat16)
     assert dtype in half_dtypes
     assert q.device.type == 'cuda' and q.size(-1) <= 256

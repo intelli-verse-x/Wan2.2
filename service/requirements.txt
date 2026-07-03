@@ -1,0 +1,7 @@
+# Service-only dependencies. The heavy ML stack (torch, diffusers, etc.) comes
+# from the repo-root requirements.txt and must already be installed in the env.
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+pydantic>=2.5
+redis>=5.0  # optional: only used when WAN_REDIS_URL is set
