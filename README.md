@@ -55,6 +55,7 @@ If your research or project builds upon [**Wan2.1**](https://github.com/Wan-Vide
 - [Cache-dit](https://github.com/vipshop/cache-dit) offers Fully Cache Acceleration support for **Wan2.2** MoE with DBCache, TaylorSeer and Cache CFG. Visit their [example](https://github.com/vipshop/cache-dit/blob/main/examples/pipeline/run_wan_2.2.py) for more details.
 - [Kijai's ComfyUI WanVideoWrapper](https://github.com/kijai/ComfyUI-WanVideoWrapper) is an alternative implementation of **Wan** models for ComfyUI. Thanks to its Wan-only focus, it's on the frontline of getting cutting edge optimizations and hot research features, which are often hard to integrate into ComfyUI quickly due to its more rigid structure.
 - [DiffSynth-Studio](https://github.com/modelscope/DiffSynth-Studio) provides comprehensive support for **Wan 2.2**, including low-GPU-memory layer-by-layer offload, FP8 quantization, sequence parallelism, LoRA training, full training.
+- [TalkVerse](https://zhenzhiwang.github.io/talkverse/), built on **Wan2.2-TI2V-5B**, enables minute-long audio-driven human video generation. It provides a **[large-scale dataset](https://huggingface.co/datasets/zhenzhiwang/TalkVerse)**, together with [training and inference code and model weights](https://github.com/snap-research/TalkVerse), to support reproducible research and development, especially for researchers with limited computational budgets.
 
 
 ## 📑 Todo List
